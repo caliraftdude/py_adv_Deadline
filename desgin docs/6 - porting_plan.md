@@ -1,8 +1,8 @@
-# 6. 🧩 Porting Plan - Deadline ZIL to Python 3.14 Migration Strategy
+# 6. 🧩 Porting Plan - Deadline ZIL to Python 3.13 Migration Strategy
 
 ## Migration Overview
 
-The porting of Deadline from ZIL to Python 3.14 will be executed in carefully planned phases, each building upon the previous phase while maintaining functionality and allowing for validation at each step. This approach minimizes risk and ensures that the final product preserves the original game's integrity while benefiting from modern Python capabilities.
+The porting of Deadline from ZIL to Python 3.13 will be executed in carefully planned phases, each building upon the previous phase while maintaining functionality and allowing for validation at each step. This approach minimizes risk and ensures that the final product preserves the original game's integrity while benefiting from modern Python capabilities.
 
 ## Phase 1: Foundation and Infrastructure (Weeks 1-3)
 
@@ -17,7 +17,7 @@ The porting of Deadline from ZIL to Python 3.14 will be executed in carefully pl
 #### 1.1 Development Environment Setup
 ```bash
 # Environment setup checklist
-- Python 3.14 virtual environment
+- Python 3.13 virtual environment
 - Development dependencies installation
 - Git repository structure
 - Pre-commit hooks configuration
@@ -804,4 +804,4 @@ MILESTONE_REVIEWS = {
 }
 ```
 
-This comprehensive porting plan provides a structured approach to migrating Deadline from ZIL to Python 3.14 while managing risks and ensuring quality at each step. The phased approach allows for validation and adjustment at each milestone, maximizing the chances of a successful port that preserves the original game's integrity while benefiting from modern Python capabilities.
+This comprehensive porting plan provides a structured approach to migrating Deadline from ZIL to Python 3.13 while managing risks and ensuring quality at each step. The phased approach allows for validation and adjustment at each milestone, maximizing the chances of a successful port that preserves the original game's integrity while benefiting from modern Python capabilities.

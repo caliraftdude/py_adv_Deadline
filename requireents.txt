@@ -1,0 +1,13 @@
+# Core Python 3.13 requirements
+typing-extensions>=4.8.0
+dataclasses-json>=0.6.1
+prompt-toolkit>=3.0.39
+colorama>=0.4.6
+rich>=13.5.0
+
+# Development dependencies
+pytest>=7.4.0
+pytest-cov>=4.1.0
+black>=23.0.0
+mypy>=1.5.0
+flake8>=6.0.0

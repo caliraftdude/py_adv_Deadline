@@ -1,0 +1,109 @@
+{
+  "events": [
+    {
+      "time": 540,
+      "type": "PHONE_CALL",
+      "data": {
+        "message": "The phone rings in the living room.",
+        "location": "living_room"
+      }
+    },
+    {
+      "time": 660,
+      "type": "DISCOVERY",
+      "data": {
+        "character_id": "mcnabb",
+        "message": "McNabb discovers damage to his roses and becomes upset."
+      }
+    },
+    {
+      "time": 690,
+      "type": "MEETING",
+      "data": {
+        "message": "The will is read in the living room.",
+        "participants": ["mrs_robner", "george", "baxter", "dunbar"]
+      }
+    },
+    {
+      "time": 780,
+      "type": "CHARACTER_ACTION",
+      "data": {
+        "character_id": "george",
+        "action": "George goes to the library to search for something."
+      }
+    },
+    {
+      "time": 840,
+      "type": "CHARACTER_ACTION",
+      "data": {
+        "character_id": "dunbar",
+        "action": "Ms. Dunbar appears nervous and starts packing."
+      }
+    },
+    {
+      "time": 1080,
+      "type": "TIME_LIMIT_WARNING",
+      "data": {
+        "message": "Only 2 hours remain in your investigation."
+      }
+    },
+    {
+      "time": 1140,
+      "type": "TIME_LIMIT_WARNING",
+      "data": {
+        "message": "Only 1 hour remains in your investigation."
+      }
+    },
+    {
+      "time": 1200,
+      "type": "GAME_OVER",
+      "data": {
+        "message": "Your time has run out. The case is closed."
+      }
+    }
+  ],
+  
+  "daemons": [
+    {
+      "name": "time_daemon",
+      "description": "Updates game time every turn"
+    },
+    {
+      "name": "character_daemon",
+      "description": "Updates character positions and activities"
+    },
+    {
+      "name": "evidence_daemon",
+      "description": "Checks for evidence discovery conditions"
+    }
+  ],
+  
+  "character_reactions": {
+    "george_nervous": {
+      "trigger": "player_has_will",
+      "reaction": "George becomes visibly agitated when you have the will."
+    },
+    "dunbar_suspicious": {
+      "trigger": "player_questions_canada",
+      "reaction": "Ms. Dunbar becomes defensive when asked about Canada."
+    },
+    "baxter_helpful": {
+      "trigger": "player_shows_respect",
+      "reaction": "Baxter becomes more cooperative when treated respectfully."
+    }
+  },
+  
+  "timed_events": {
+    "newspaper_delivery": {
+      "time": 660,
+      "location": "front_path",
+      "action": "deliver_newspaper",
+      "message": "A newspaper is thrown onto the front path."
+    },
+    "duffy_analysis": {
+      "delay": 30,
+      "action": "return_analysis",
+      "message": "Sergeant Duffy returns with the analysis results."
+    }
+  }
+}

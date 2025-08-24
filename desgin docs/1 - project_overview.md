@@ -103,7 +103,7 @@ The game represents a significant advancement in interactive fiction by:
 
 ## Port Objectives
 
-The Python 3.14 port will:
+The Python 3.13 port will:
 1. **Preserve Core Functionality**: Maintain all original game mechanics and puzzles
 2. **Modernize Interface**: Improve user experience while retaining text-based interaction
 3. **Enhance Maintainability**: Create clean, well-documented Python code

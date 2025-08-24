@@ -1,0 +1,859 @@
+{
+  "config": {
+    "title": "Deadline",
+    "author": "Marc Blank",
+    "version": "1.0.0",
+    "max_score": 100,
+    "max_moves": 1440,
+    "start_time": 480,
+    "time_limit": 720,
+    "debug_mode": false
+  },
+  
+  "player": {
+    "starting_room": "front_path",
+    "max_carry_weight": 100,
+    "max_carry_items": 10
+  },
+  
+  "rooms": {
+    "front_path": {
+      "name": "Front Path",
+      "description": "You are standing on a path that leads north to the front door of the Robner estate. The path continues around the house to the east and west. The driveway leads south to the main road.",
+      "visited_description": "You are on the front path.",
+      "exits": {
+        "north": "front_door",
+        "east": "east_of_front_door",
+        "west": "west_of_front_door",
+        "south": "driveway"
+      },
+      "light_needed": false
+    },
+    
+    "driveway": {
+      "name": "Driveway",
+      "description": "The driveway curves here, leading north to the house and south to the main road. Your car is parked here.",
+      "visited_description": "You are in the driveway.",
+      "exits": {
+        "north": "front_path"
+      },
+      "light_needed": false
+    },
+    
+    "front_door": {
+      "name": "Front Door",
+      "description": "You are at the front door of the Robner mansion. The door is closed.",
+      "visited_description": "You are at the front door.",
+      "exits": {
+        "south": "front_path",
+        "north": "foyer"
+      },
+      "light_needed": false
+    },
+    
+    "foyer": {
+      "name": "Foyer",
+      "description": "This is the foyer of the Robner home. It is decorated in an austere style, with a worn but expensive-looking oriental rug covering the floor. A doorway leads north into a hallway. The front door is to the south.",
+      "visited_description": "You are in the foyer.",
+      "exits": {
+        "north": "main_hall",
+        "south": "front_door"
+      },
+      "light_needed": false,
+      "contents": ["oriental_rug"]
+    },
+    
+    "main_hall": {
+      "name": "Main Hall",
+      "description": "This is the main hall of the ground floor. The hall continues to the north. To the east is the living room, and to the west is the dining room. A staircase leads up to the second floor. The foyer is to the south.",
+      "visited_description": "You are in the main hall.",
+      "exits": {
+        "north": "north_hall",
+        "east": "living_room",
+        "west": "dining_room",
+        "south": "foyer",
+        "up": "upstairs_hallway"
+      },
+      "light_needed": false
+    },
+    
+    "living_room": {
+      "name": "Living Room",
+      "description": "The living room is large and comfortable, with several overstuffed chairs and a sofa arranged around a coffee table. French doors lead out to a garden to the east. The main hall is to the west.",
+      "visited_description": "You are in the living room.",
+      "exits": {
+        "west": "main_hall",
+        "east": "garden"
+      },
+      "light_needed": false,
+      "contents": ["sofa", "coffee_table", "chairs", "phone_living"]
+    },
+    
+    "dining_room": {
+      "name": "Dining Room",
+      "description": "The dining room has a large table with eight chairs around it. A cabinet against the wall contains china and silverware. The main hall is to the east.",
+      "visited_description": "You are in the dining room.",
+      "exits": {
+        "east": "main_hall",
+        "north": "kitchen"
+      },
+      "light_needed": false,
+      "contents": ["dining_table", "dining_chairs", "cabinet", "china", "silverware"]
+    },
+    
+    "kitchen": {
+      "name": "Kitchen",
+      "description": "The kitchen is large and well-equipped. There is a door to the north leading to the pantry, and another to the west leading to Mrs. Rourke's room. The dining room is to the south.",
+      "visited_description": "You are in the kitchen.",
+      "exits": {
+        "north": "pantry",
+        "south": "dining_room",
+        "west": "rourke_room"
+      },
+      "light_needed": false,
+      "contents": ["stove", "refrigerator", "sink", "counter", "glassware"]
+    },
+    
+    "pantry": {
+      "name": "Pantry",
+      "description": "The pantry is stocked with various foods and supplies. The kitchen is to the south.",
+      "visited_description": "You are in the pantry.",
+      "exits": {
+        "south": "kitchen"
+      },
+      "light_needed": false,
+      "contents": ["food", "supplies"]
+    },
+    
+    "rourke_room": {
+      "name": "Mrs. Rourke's Room",
+      "description": "This is Mrs. Rourke's bedroom. It is small but tidy. There is a door to the north leading to a bathroom.",
+      "visited_description": "You are in Mrs. Rourke's room.",
+      "exits": {
+        "east": "kitchen",
+        "north": "rourke_bathroom"
+      },
+      "light_needed": false,
+      "contents": ["rourke_bed", "dresser"]
+    },
+    
+    "rourke_bathroom": {
+      "name": "Mrs. Rourke's Bathroom",
+      "description": "A small, clean bathroom.",
+      "visited_description": "You are in Mrs. Rourke's bathroom.",
+      "exits": {
+        "south": "rourke_room"
+      },
+      "light_needed": false,
+      "contents": ["toilet", "sink", "mirror"]
+    },
+    
+    "north_hall": {
+      "name": "North Hall",
+      "description": "The hallway continues here. To the west is a door leading to Mr. Robner's study. The main hall is to the south.",
+      "visited_description": "You are in the north hall.",
+      "exits": {
+        "south": "main_hall",
+        "west": "study"
+      },
+      "light_needed": false
+    },
+    
+    "study": {
+      "name": "Mr. Robner's Study",
+      "description": "This is Mr. Robner's study, where he conducted business. A large desk dominates the room. Behind it on the wall is a painting, and a safe is visible behind the painting. Bookshelves line the walls.",
+      "visited_description": "You are in the study.",
+      "exits": {
+        "east": "north_hall"
+      },
+      "light_needed": false,
+      "contents": ["desk", "safe", "painting", "bookshelves", "chair_study"]
+    },
+    
+    "upstairs_hallway": {
+      "name": "Upstairs Hallway",
+      "description": "This is the second floor hallway. Doors lead to various bedrooms. To the west is the master bedroom, to the east is George's room, and to the north is the library. The stairs lead down.",
+      "visited_description": "You are in the upstairs hallway.",
+      "exits": {
+        "west": "master_bedroom",
+        "east": "george_room",
+        "north": "library",
+        "south": "dunbar_room",
+        "down": "main_hall"
+      },
+      "light_needed": false
+    },
+    
+    "master_bedroom": {
+      "name": "Master Bedroom",
+      "description": "This is the master bedroom where Mr. Robner died. The bed is unmade, and there are signs of disturbance. A nightstand next to the bed holds a glass and a medicine bottle. A door to the north leads to the master bathroom.",
+      "visited_description": "You are in the master bedroom.",
+      "exits": {
+        "east": "upstairs_hallway",
+        "north": "master_bathroom"
+      },
+      "light_needed": false,
+      "initial_state": "crime_scene",
+      "contents": ["bed", "nightstand", "medicine_bottle", "glass", "phone_master"]
+    },
+    
+    "master_bathroom": {
+      "name": "Master Bathroom",
+      "description": "The master bathroom is large and luxurious.",
+      "visited_description": "You are in the master bathroom.",
+      "exits": {
+        "south": "master_bedroom"
+      },
+      "light_needed": false,
+      "contents": ["bathtub", "toilet", "sink", "mirror", "cabinet_bathroom"]
+    },
+    
+    "george_room": {
+      "name": "George's Room",
+      "description": "This is George Robner's bedroom. It's somewhat messy, with clothes scattered about. There's a liquor cabinet against one wall.",
+      "visited_description": "You are in George's room.",
+      "exits": {
+        "west": "upstairs_hallway"
+      },
+      "light_needed": false,
+      "contents": ["george_bed", "liquor_cabinet", "clothes"]
+    },
+    
+    "dunbar_room": {
+      "name": "Ms. Dunbar's Room",
+      "description": "This is Ms. Dunbar's bedroom. It is neat and orderly. A door to the east leads to a bathroom.",
+      "visited_description": "You are in Ms. Dunbar's room.",
+      "exits": {
+        "north": "upstairs_hallway",
+        "east": "dunbar_bathroom"
+      },
+      "light_needed": false,
+      "contents": ["dunbar_bed", "dunbar_desk"]
+    },
+    
+    "dunbar_bathroom": {
+      "name": "Ms. Dunbar's Bathroom",
+      "description": "Ms. Dunbar's private bathroom. A medicine cabinet is on the wall.",
+      "visited_description": "You are in Ms. Dunbar's bathroom.",
+      "exits": {
+        "west": "dunbar_room"
+      },
+      "light_needed": false,
+      "contents": ["cabinet_dunbar", "toilet", "sink", "mirror"]
+    },
+    
+    "library": {
+      "name": "Library",
+      "description": "The library walls are lined with bookshelves containing hundreds of volumes. A large oak desk sits near the window. There's a balcony door to the north. The room has a musty smell of old books and paper.",
+      "visited_description": "You are in the library.",
+      "exits": {
+        "south": "upstairs_hallway",
+        "north": "library_balcony"
+      },
+      "light_needed": false,
+      "contents": ["oak_desk", "bookshelves_library", "notepad", "pencil", "calendar", "teacup", "saucer", "phone_library", "mud_spots"]
+    },
+    
+    "library_balcony": {
+      "name": "Library Balcony",
+      "description": "This small balcony overlooks the rose garden. The railing shows signs of recent scraping, as if something rubbed against it.",
+      "visited_description": "You are on the library balcony.",
+      "exits": {
+        "south": "library"
+      },
+      "light_needed": false,
+      "scraped_paint": true
+    },
+    
+    "garden": {
+      "name": "Garden",
+      "description": "The garden is well-maintained with various flowers and shrubs. A path leads north to the rose garden.",
+      "visited_description": "You are in the garden.",
+      "exits": {
+        "west": "living_room",
+        "north": "rose_garden"
+      },
+      "light_needed": false
+    },
+    
+    "rose_garden": {
+      "name": "Rose Garden",
+      "description": "The rose garden is beautiful, with many varieties of roses. However, you notice that some of the rose bushes have been damaged, with holes in the ground nearby.",
+      "visited_description": "You are in the rose garden.",
+      "exits": {
+        "south": "garden",
+        "west": "garden_path"
+      },
+      "light_needed": false,
+      "contents": ["roses", "holes"]
+    },
+    
+    "garden_path": {
+      "name": "Garden Path",
+      "description": "A winding path through the grounds.",
+      "visited_description": "You are on the garden path.",
+      "exits": {
+        "east": "rose_garden",
+        "north": "orchard",
+        "west": "shed"
+      },
+      "light_needed": false
+    },
+    
+    "orchard": {
+      "name": "Orchard",
+      "description": "The orchard contains various fruit trees.",
+      "visited_description": "You are in the orchard.",
+      "exits": {
+        "south": "garden_path"
+      },
+      "light_needed": false,
+      "contents": ["fruit", "berries"]
+    },
+    
+    "shed": {
+      "name": "Garden Shed",
+      "description": "The garden shed contains various gardening tools. A ladder leans against the wall.",
+      "visited_description": "You are in the shed.",
+      "exits": {
+        "east": "garden_path"
+      },
+      "light_needed": false,
+      "contents": ["ladder", "tools"]
+    },
+    
+    "east_of_front_door": {
+      "name": "East of Front Door",
+      "description": "You are on the east side of the house.",
+      "visited_description": "East side of house.",
+      "exits": {
+        "west": "front_path",
+        "north": "east_lawn"
+      },
+      "light_needed": false
+    },
+    
+    "west_of_front_door": {
+      "name": "West of Front Door",
+      "description": "You are on the west side of the house.",
+      "visited_description": "West side of house.",
+      "exits": {
+        "east": "front_path",
+        "north": "west_lawn"
+      },
+      "light_needed": false
+    },
+    
+    "east_lawn": {
+      "name": "East Lawn",
+      "description": "The east lawn stretches out before you.",
+      "visited_description": "You are on the east lawn.",
+      "exits": {
+        "south": "east_of_front_door",
+        "west": "garden"
+      },
+      "light_needed": false
+    },
+    
+    "west_lawn": {
+      "name": "West Lawn",
+      "description": "The west lawn is well-manicured.",
+      "visited_description": "You are on the west lawn.",
+      "exits": {
+        "south": "west_of_front_door"
+      },
+      "light_needed": false
+    }
+  },
+  
+  "objects": {
+    "medicine_bottle": {
+      "name": "medicine bottle",
+      "description": "A prescription bottle labeled 'Ebullion - Take 2 tablets for sleep as needed. Prescription #69105'. The bottle is nearly empty, containing only a few tablets.",
+      "synonyms": ["george", "son"],
+      "location": "george_room",
+      "trust_level": -5,
+      "suspicious": true,
+      "knowledge": {
+        "father": "We didn't always see eye to eye, but I loved him.",
+        "argument": "Yes, we argued about business, but that's normal.",
+        "alibi": "I was in my room all night. Ask anyone.",
+        "will": "I don't know what you're talking about.",
+        "meeting": "There was no meeting planned that night.",
+        "business": "Father's business was his own affair.",
+        "focus": "I don't know anything about Focus.",
+        "dunbar": "Ms. Dunbar? She's father's secretary.",
+        "money": "I don't need father's money."
+      },
+      "conversation_topics": {
+        "inheritance": "I was supposed to inherit, but father changed his mind.",
+        "debts": "I may have some gambling debts, but nothing serious."
+      },
+      "evidence_topics": ["inheritance", "debts"],
+      "show_reactions": {
+        "will": "George turns pale. 'Where did you get that?'",
+        "calendar": "George looks nervous. 'I don't know anything about that meeting.'"
+      },
+      "schedule": [
+        {"time": 480, "location": "george_room", "activity": "hiding"},
+        {"time": 540, "location": "study", "activity": "searching"},
+        {"time": 600, "location": "dining_room", "activity": "eating"},
+        {"time": 660, "location": "garden", "activity": "smoking"},
+        {"time": 720, "location": "george_room", "activity": "packing"},
+        {"time": 780, "location": "library", "activity": "searching"},
+        {"time": 840, "location": "george_room", "activity": "nervous"}
+      ]
+    },
+    
+    "baxter": {
+      "name": "Baxter",
+      "description": "The butler. Professional and discrete, but observant.",
+      "synonyms": ["baxter", "butler"],
+      "location": "main_hall",
+      "trust_level": 5,
+      "knowledge": {
+        "household": "I've served the Robner family for fifteen years.",
+        "george": "Master George came home late that night, around 11:30.",
+        "argument": "I heard raised voices from the study around 11 PM.",
+        "mrs_robner": "Mrs. Robner retired early that evening.",
+        "visitors": "No unexpected visitors that night, Inspector.",
+        "focus": "Mr. Robner mentioned Focus Corporation several times.",
+        "dunbar": "Ms. Dunbar worked late with Mr. Robner that evening.",
+        "murder": "Murder? But the door was locked from inside!",
+        "ladder": "The gardener's ladder? It's usually in the shed."
+      },
+      "conversation_topics": {
+        "routine": "I always check the house before retiring at midnight.",
+        "sounds": "I heard footsteps on the stairs around 11:30."
+      },
+      "evidence_topics": ["sounds", "argument"],
+      "show_reactions": {
+        "ticket_stub": "Baxter looks surprised. 'Montreal? How odd.'",
+        "business_papers": "Baxter nods. 'Yes, Mr. Robner was quite worried about those.'"
+      },
+      "schedule": [
+        {"time": 480, "location": "main_hall", "activity": "duties"},
+        {"time": 540, "location": "dining_room", "activity": "serving"},
+        {"time": 600, "location": "kitchen", "activity": "supervising"},
+        {"time": 720, "location": "main_hall", "activity": "greeting"},
+        {"time": 780, "location": "study", "activity": "cleaning"},
+        {"time": 900, "location": "main_hall", "activity": "duties"}
+      ]
+    },
+    
+    "dunbar": {
+      "name": "Ms. Dunbar",
+      "description": "Mr. Robner's secretary. She appears calm and professional.",
+      "synonyms": ["dunbar", "secretary", "ms"],
+      "location": "dunbar_room",
+      "trust_level": -3,
+      "knowledge": {
+        "robner": "Mr. Robner was a good employer.",
+        "business": "The business was in some trouble, yes.",
+        "focus": "Focus Corporation was interested in a merger.",
+        "george": "George and his father didn't get along well.",
+        "alibi": "I was in my room all night.",
+        "work": "I often worked late with Mr. Robner.",
+        "pills": "I don't know anything about Mr. Robner's medication.",
+        "loblo": "LoBlo? That's my blood pressure medication."
+      },
+      "conversation_topics": {
+        "relationship": "My relationship with Mr. Robner was strictly professional.",
+        "canada": "Canada? I've never been there."
+      },
+      "evidence_topics": ["relationship"],
+      "show_reactions": {
+        "loblo": "Ms. Dunbar looks uncomfortable. 'That's my private medication.'",
+        "ticket_stub": "Ms. Dunbar's face goes white. 'I... I can explain.'",
+        "saucer": "Ms. Dunbar looks nervous. 'I don't know how my fingerprints got there.'"
+      },
+      "schedule": [
+        {"time": 480, "location": "dunbar_room", "activity": "working"},
+        {"time": 600, "location": "dining_room", "activity": "breakfast"},
+        {"time": 660, "location": "study", "activity": "working"},
+        {"time": 780, "location": "dunbar_room", "activity": "packing"},
+        {"time": 840, "location": "garden", "activity": "walking"},
+        {"time": 900, "location": "dunbar_room", "activity": "nervous"}
+      ]
+    },
+    
+    "mrs_rourke": {
+      "name": "Mrs. Rourke",
+      "description": "The housekeeper. She seems upset by the tragedy.",
+      "synonyms": ["rourke", "housekeeper", "mrs"],
+      "location": "kitchen",
+      "trust_level": 3,
+      "knowledge": {
+        "household": "I've been here five years. It's a good position.",
+        "robner": "Mr. Robner was a fair employer.",
+        "george": "Young George has his troubles.",
+        "dunbar": "Ms. Dunbar keeps to herself mostly.",
+        "baxter": "Mr. Baxter runs a tight ship.",
+        "breakfast": "I prepared Mr. Robner's breakfast tray that morning.",
+        "tea": "I made tea for Mr. Robner the previous evening."
+      },
+      "conversation_topics": {
+        "stairs": "The stairs creak terribly. You can hear anyone going up or down."
+      },
+      "evidence_topics": ["stairs"],
+      "schedule": [
+        {"time": 480, "location": "kitchen", "activity": "cooking"},
+        {"time": 540, "location": "dining_room", "activity": "serving"},
+        {"time": 600, "location": "kitchen", "activity": "cleaning"},
+        {"time": 720, "location": "rourke_room", "activity": "resting"},
+        {"time": 840, "location": "kitchen", "activity": "preparing_dinner"}
+      ]
+    },
+    
+    "mcnabb": {
+      "name": "McNabb",
+      "description": "The gardener. He's angry about damage to his roses.",
+      "synonyms": ["mcnabb", "gardener", "angus"],
+      "location": "garden",
+      "trust_level": 2,
+      "knowledge": {
+        "roses": "Someone's been trampling my roses!",
+        "ladder": "My ladder's been moved! It was in the shed.",
+        "holes": "Look at these holes! Someone put a ladder here.",
+        "garden": "I take pride in this garden.",
+        "family": "The Robners are good employers.",
+        "night": "I wasn't here that night. I leave at 6 PM."
+      },
+      "conversation_topics": {
+        "damage": "The damage was done recently, maybe last night."
+      },
+      "evidence_topics": ["damage", "ladder"],
+      "schedule": [
+        {"time": 480, "location": "garden", "activity": "working"},
+        {"time": 540, "location": "shed", "activity": "getting_tools"},
+        {"time": 600, "location": "orchard", "activity": "pruning"},
+        {"time": 720, "location": "rose_garden", "activity": "upset"},
+        {"time": 780, "location": "garden_path", "activity": "working"}
+      ]
+    }
+  },
+  
+  "solution": {
+    "murderer": "george",
+    "accomplice": "dunbar",
+    "method": "overdose",
+    "motive": "inheritance",
+    "required_evidence": ["will", "calendar", "ladder", "loblo", "mud_spots"],
+    "optional_evidence": ["medicine_bottle", "business_papers", "fragment", "ticket_stub"],
+    "confession_trigger": {
+      "evidence_count": 4,
+      "specific_items": ["will", "calendar", "ticket_stub"],
+      "trust_level": -10
+    },
+    "timeline": {
+      "10:30 PM": "George argues with father in study",
+      "11:00 PM": "Scheduled meeting between George and Marshall",
+      "11:15 PM": "George puts Ebullion overdose in father's drink",
+      "11:30 PM": "Marshall takes the poisoned drink",
+      "11:45 PM": "Dunbar helps stage the scene",
+      "12:00 AM": "Marshall dies from overdose",
+      "12:15 AM": "George and Dunbar use ladder to enter library",
+      "12:30 AM": "Fake suicide note planted"
+    }
+  },
+  
+  "intro_text": "DEADLINE\nBy Marc Blank\n\nYou are the Chief of Detectives. You've been summoned to the Robner estate to investigate the death of Mr. Marshall Robner, a wealthy industrialist. He was found dead in his locked bedroom this morning, apparently from an overdose of his prescribed sleeping medication.\n\nThe coroner has ruled it a suicide, but Mrs. Robner is not convinced. She has asked you to investigate further. You have 12 hours before the case will be officially closed.\n\nThe estate is large and the family members all seem to have their own secrets. You'll need to examine evidence carefully, question everyone, and piece together what really happened last night.\n\nGood luck, Inspector. Time is running out.",
+  
+  "victory_text": "CASE SOLVED!\n\nCongratulations! Through careful investigation and deduction, you have successfully proven that George Robner murdered his father with the assistance of Ms. Dunbar.\n\nGeorge, facing disinheritance and crushing gambling debts, conspired with Ms. Dunbar (who was having an affair with him) to kill Marshall Robner. They used an overdose of Ebullion mixed with Ms. Dunbar's LoBlo medication to ensure a fatal reaction, then staged the scene to look like suicide.\n\nThe ladder from the shed was used to access the library balcony after the murder, where they planted the fake suicide note. The mud on the ladder and in the library, along with the damaged roses, provided the crucial physical evidence.\n\nBoth George Robner and Ms. Dunbar have been arrested and will stand trial for murder.\n\nYour keen investigative skills have brought justice for Marshall Robner.",
+  
+  "failure_text": "CASE UNSOLVED\n\nUnfortunately, you have failed to solve the case in time. Without sufficient evidence to prove murder, the death of Marshall Robner will remain officially listed as a suicide.\n\nThe real killer has escaped justice, and the truth may never be known.\n\nPerhaps if you had been more thorough in your investigation, or questioned the suspects more carefully, you might have uncovered the evidence needed to solve this case.",
+  
+  "timeout_text": "TIME'S UP\n\nYour 12 hours have expired. The case is being closed as a suicide, as originally determined by the coroner.\n\nYou suspect there's more to the story - the inconsistencies in the evidence, the nervous behavior of certain family members, the mysterious circumstances - but without concrete proof, there's nothing more you can do.\n\nThe investigation is over. The truth will remain buried with Marshall Robner."
+}bottle", "pills", "medicine", "ebullion", "tablets"],
+      "adjectives": ["prescription", "medicine"],
+      "flags": ["takeable", "readable", "container", "evidence"],
+      "size": 1,
+      "weight": 1,
+      "evidence": true,
+      "evidence_value": 10,
+      "analysis_result": "The tablets are confirmed to be Ebullion, a powerful sleep medication. An overdose would be fatal.",
+      "fingerprints": ["Marshall Robner", "George Robner"]
+    },
+    
+    "glass": {
+      "name": "glass",
+      "description": "A drinking glass with dried residue at the bottom.",
+      "synonyms": ["tumbler", "cup"],
+      "adjectives": ["drinking", "empty"],
+      "flags": ["takeable", "container", "evidence"],
+      "size": 1,
+      "weight": 1,
+      "evidence": true,
+      "evidence_value": 5,
+      "analysis_result": "Traces of Ebullion dissolved in water, along with a high concentration of sugar.",
+      "fingerprints": ["Marshall Robner"]
+    },
+    
+    "teacup": {
+      "name": "teacup",
+      "description": "A delicate china teacup with a scene of Greek mythology painted on it. There's dried residue in the bottom.",
+      "synonyms": ["cup", "china"],
+      "adjectives": ["china", "delicate"],
+      "flags": ["takeable", "container", "evidence"],
+      "size": 1,
+      "weight": 1,
+      "evidence": true,
+      "evidence_value": 8,
+      "analysis_result": "Contains traces of tea. No other substances detected.",
+      "fingerprints": ["Marshall Robner"]
+    },
+    
+    "saucer": {
+      "name": "saucer",
+      "description": "A china saucer that matches the teacup.",
+      "synonyms": ["plate"],
+      "adjectives": ["china", "matching"],
+      "flags": ["takeable", "evidence"],
+      "size": 1,
+      "weight": 1,
+      "evidence": true,
+      "evidence_value": 8,
+      "analysis_result": "Contains traces of tea and sugar. Additional fingerprints found.",
+      "fingerprints": ["Marshall Robner", "Ms. Dunbar"]
+    },
+    
+    "notepad": {
+      "name": "notepad",
+      "description": "A notepad with the top page torn off. You can see indentations from writing on the previous page.",
+      "synonyms": ["pad", "paper"],
+      "adjectives": ["writing"],
+      "flags": ["takeable", "readable", "evidence"],
+      "size": 1,
+      "weight": 0,
+      "evidence": true,
+      "evidence_value": 12,
+      "rubbing_reveals": "Focus: 7/7"
+    },
+    
+    "pencil": {
+      "name": "pencil",
+      "description": "An ordinary pencil.",
+      "synonyms": [],
+      "adjectives": ["ordinary"],
+      "flags": ["takeable"],
+      "size": 1,
+      "weight": 0
+    },
+    
+    "calendar": {
+      "name": "calendar",
+      "description": "A desk calendar turned to July 6th. There are various appointments marked.",
+      "synonyms": ["appointments"],
+      "adjectives": ["desk"],
+      "flags": ["readable", "evidence"],
+      "evidence": true,
+      "evidence_value": 10,
+      "readable_text": "July 6: 'Meeting with George - 11 PM'\nJuly 7: 'Focus merger papers due'\nJuly 8: 'Will completed'"
+    },
+    
+    "ladder": {
+      "name": "ladder",
+      "description": "A tall ladder, caked with dried mud. It looks like it's been used recently.",
+      "synonyms": [],
+      "adjectives": ["tall", "muddy"],
+      "flags": ["takeable"],
+      "size": 10,
+      "weight": 20,
+      "evidence": true,
+      "evidence_value": 15,
+      "analysis_result": "The mud on the ladder matches soil samples from the rose garden."
+    },
+    
+    "safe": {
+      "name": "safe",
+      "description": "A heavy wall safe, currently locked. It requires a combination to open.",
+      "synonyms": ["vault"],
+      "adjectives": ["wall", "heavy", "locked"],
+      "flags": ["container", "locked", "fixed"],
+      "combination": "7-7",
+      "capacity": 5,
+      "contents": ["will", "business_papers", "safe_key"]
+    },
+    
+    "will": {
+      "name": "will",
+      "description": "Marshall Robner's last will and testament, dated July 8th. It shows that George was recently removed as a beneficiary, with everything going to Mrs. Robner instead.",
+      "synonyms": ["testament", "document"],
+      "adjectives": ["last"],
+      "flags": ["takeable", "readable", "evidence", "hidden"],
+      "evidence": true,
+      "evidence_value": 25,
+      "size": 1,
+      "weight": 0,
+      "readable_text": "Last Will and Testament of Marshall Robner\nDated: July 8\n\nI leave my entire estate to my wife, Leslie Robner.\n\n[Previous version crossed out showing George as beneficiary]"
+    },
+    
+    "business_papers": {
+      "name": "business papers",
+      "description": "Documents relating to the Focus Corporation merger. They indicate serious financial troubles.",
+      "synonyms": ["papers", "documents", "focus"],
+      "adjectives": ["business", "focus"],
+      "flags": ["takeable", "readable", "evidence", "hidden"],
+      "evidence": true,
+      "evidence_value": 20,
+      "size": 2,
+      "weight": 1,
+      "readable_text": "Focus Corporation Merger Agreement\n\nMr. Robner's company is in serious financial trouble.\nThe merger with Focus Corporation is the only way to avoid bankruptcy.\nDeadline: July 7"
+    },
+    
+    "suicide_note": {
+      "name": "note",
+      "description": "A handwritten note that reads: 'I can't go on any longer. The business is failing and I've let everyone down. Goodbye. - Marshall'",
+      "synonyms": ["note", "letter", "paper"],
+      "adjectives": ["handwritten", "suicide"],
+      "flags": ["takeable", "readable", "evidence", "hidden"],
+      "evidence": true,
+      "evidence_value": 15,
+      "size": 1,
+      "weight": 0,
+      "forged": true,
+      "analysis_result": "Handwriting analysis shows this was NOT written by Marshall Robner."
+    },
+    
+    "ticket_stub": {
+      "name": "ticket stub",
+      "description": "A ticket stub from Montreal, dated recently.",
+      "synonyms": ["ticket", "stub"],
+      "adjectives": ["montreal"],
+      "flags": ["takeable", "readable", "evidence", "hidden"],
+      "evidence": true,
+      "evidence_value": 18,
+      "size": 1,
+      "weight": 0
+    },
+    
+    "loblo": {
+      "name": "LoBlo",
+      "description": "A bottle of LoBlo blood pressure medication. The label shows it's from 'Kingston Pharmacy, Kingston, Ontario, Canada'.",
+      "synonyms": ["medication", "pills"],
+      "adjectives": ["blood", "pressure"],
+      "flags": ["takeable", "readable", "container", "evidence"],
+      "evidence": true,
+      "evidence_value": 15,
+      "location": "cabinet_dunbar",
+      "analysis_result": "LoBlo can be fatal when combined with Ebullion."
+    },
+    
+    "fragment": {
+      "name": "porcelain fragment",
+      "description": "A small piece of porcelain, possibly from a teacup.",
+      "synonyms": ["fragment", "piece", "porcelain"],
+      "adjectives": ["small", "porcelain"],
+      "flags": ["takeable", "evidence", "hidden"],
+      "evidence": true,
+      "evidence_value": 10,
+      "size": 1,
+      "weight": 0,
+      "analysis_result": "This fragment matches the pattern on the teacup from the library."
+    },
+    
+    "newspaper": {
+      "name": "newspaper",
+      "description": "Today's newspaper in two sections.",
+      "synonyms": ["paper", "news"],
+      "adjectives": ["today's"],
+      "flags": ["takeable", "readable"],
+      "size": 2,
+      "weight": 1,
+      "readable_text": "Section 1: Local news and weather.\nSection 2: Business section mentioning Focus Corporation's interest in struggling local companies."
+    },
+    
+    "mud_spots": {
+      "name": "mud spots",
+      "description": "Dried mud on the library carpet, near the balcony door.",
+      "synonyms": ["mud", "dirt", "spots"],
+      "adjectives": ["dried"],
+      "flags": ["evidence", "fixed"],
+      "evidence": true,
+      "evidence_value": 8,
+      "analysis_result": "The mud matches soil from the rose garden."
+    },
+    
+    "holes": {
+      "name": "holes",
+      "description": "Several holes in the ground near the rose bushes, as if something heavy was placed here.",
+      "synonyms": ["depressions"],
+      "adjectives": ["ground"],
+      "flags": ["evidence", "fixed"],
+      "evidence": true,
+      "evidence_value": 10
+    },
+    
+    "painting": {
+      "name": "painting",
+      "description": "An oil painting of the Robner family. It seems to be hiding something.",
+      "synonyms": ["picture", "portrait"],
+      "adjectives": ["oil", "family"],
+      "flags": ["fixed"],
+      "behind_items": ["safe"]
+    },
+    
+    "desk": {
+      "name": "desk",
+      "description": "A large mahogany desk with several drawers.",
+      "synonyms": ["table"],
+      "adjectives": ["mahogany", "large"],
+      "flags": ["container", "surface", "fixed"],
+      "contents": ["business_papers"]
+    },
+    
+    "nightstand": {
+      "name": "nightstand",
+      "description": "A bedside table.",
+      "synonyms": ["table"],
+      "adjectives": ["bedside"],
+      "flags": ["container", "surface", "fixed"]
+    },
+    
+    "cabinet_dunbar": {
+      "name": "medicine cabinet",
+      "description": "A bathroom medicine cabinet.",
+      "synonyms": ["cabinet"],
+      "adjectives": ["medicine", "bathroom"],
+      "flags": ["container", "fixed"],
+      "contents": ["loblo"]
+    }
+  },
+  
+  "characters": {
+    "mrs_robner": {
+      "name": "Mrs. Robner",
+      "description": "Leslie Robner, the widow. She appears distraught but maintains her composure.",
+      "synonyms": ["leslie", "mrs", "widow", "wife"],
+      "location": "living_room",
+      "trust_level": 0,
+      "knowledge": {
+        "husband": "He had been troubled lately about business matters.",
+        "george": "George and Marshall had been arguing frequently about money.",
+        "death": "I found him in the morning. The door was locked from the inside.",
+        "pills": "Marshall had trouble sleeping. The doctor prescribed Ebullion.",
+        "business": "I don't know much about Marshall's business dealings.",
+        "focus": "Marshall mentioned something about Focus Corporation.",
+        "will": "I didn't know he had changed his will.",
+        "dunbar": "Ms. Dunbar has been a great help with the business.",
+        "baxter": "Baxter has been with us for years. Very loyal."
+      },
+      "conversation_topics": {
+        "alibi": "I was asleep in the guest room. Marshall had been restless lately.",
+        "phone": "Phone? I didn't make any calls that night."
+      },
+      "evidence_topics": ["alibi", "pills"],
+      "schedule": [
+        {"time": 480, "location": "living_room", "activity": "grieving"},
+        {"time": 540, "location": "kitchen", "activity": "making_tea"},
+        {"time": 600, "location": "dining_room", "activity": "breakfast"},
+        {"time": 660, "location": "garden", "activity": "walking"},
+        {"time": 720, "location": "living_room", "activity": "receiving_visitors"},
+        {"time": 900, "location": "master_bedroom", "activity": "resting"}
+      ]
+    },
+    
+    "george": {
+      "name": "George Robner",
+      "description": "George Robner, the son. He seems nervous and avoids eye contact.",
+      "synonyms": ["

@@ -1,4 +1,4 @@
-# 4. 🔁 Mapping Constructs - ZIL to Python 3.14 Translation
+# 4. 🔁 Mapping Constructs - ZIL to Python 3.13 Translation
 
 ## Core Language Construct Mappings
 
@@ -12,7 +12,7 @@
     <RETURN .ARG1>>
 ```
 
-#### Python 3.14 Equivalent
+#### Python 3.13 Equivalent
 ```python
 def function_name(arg1: Object, arg2: str, arg3: int = DEFAULT_VALUE) -> Object:
     """ZIL routine translated to Python function"""
@@ -42,7 +42,7 @@ def function_name(arg1: Object, arg2: str, arg3: int = DEFAULT_VALUE) -> Object:
     (ACTION BRASS-KEY-ACTION)>
 ```
 
-#### Python 3.14 Class System
+#### Python 3.13 Class System
 ```python
 class BrassKey(GameObject):
     def __init__(self):
@@ -744,4 +744,4 @@ class RoomManager:
         return self._room_cache[room_id]
 ```
 
-This comprehensive mapping provides the foundation for translating ZIL's unique constructs into idiomatic Python 3.14 code while preserving the original game's functionality and structure. The patterns established here will guide the actual code translation process in subsequent steps.
+This comprehensive mapping provides the foundation for translating ZIL's unique constructs into idiomatic Python 3.13 code while preserving the original game's functionality and structure. The patterns established here will guide the actual code translation process in subsequent steps.

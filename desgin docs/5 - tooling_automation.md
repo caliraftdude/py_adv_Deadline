@@ -1,13 +1,13 @@
-# 5. 🛠️ Tooling and Automation - ZIL to Python 3.14 Port
+# 5. 🛠️ Tooling and Automation - ZIL to Python 3.13 Port
 
 ## Development Environment Setup
 
-### Python 3.14 Environment Configuration
+### Python 3.13 Environment Configuration
 
 #### Virtual Environment Setup
 ```bash
 # Create dedicated development environment
-python3.14 -m venv deadline_port_env
+python3.13 -m venv deadline_port_env
 source deadline_port_env/bin/activate  # Linux/Mac
 # deadline_port_env\Scripts\activate  # Windows
 
@@ -19,7 +19,7 @@ python -m pip install --upgrade pip setuptools wheel
 ```python
 # requirements-dev.txt
 # Core development dependencies
-python>=3.14
+python>=3.13
 black>=23.0.0           # Code formatting
 isort>=5.12.0           # Import sorting
 mypy>=1.5.0             # Type checking
@@ -48,7 +48,7 @@ regex>=2023.6.3         # Advanced regex features
 ```toml
 # pyproject.toml
 [tool.mypy]
-python_version = "3.14"
+python_version = "3.13"
 warn_return_any = true
 warn_unused_configs = true
 warn_unreachable = true
@@ -337,7 +337,7 @@ setup(
     author="Port Team",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
-    python_requires=">=3.14",
+    python_requires=">=3.13",
     install_requires=[
         "prompt-toolkit>=3.0.39",
         "colorama>=0.4.6",
@@ -361,7 +361,7 @@ setup(
         "Development Status :: 4 - Beta",
         "Intended Audience :: End Users/Desktop",
         "Topic :: Games/Entertainment",
-        "Programming Language :: Python :: 3.14",
+        "Programming Language :: Python :: 3.13",
     ],
 )
 ```
@@ -382,7 +382,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.14"]
+        python-version: ["3.13"]
     
     steps:
     - uses: actions/checkout@v4
@@ -440,7 +440,7 @@ repos:
     rev: 23.7.0
     hooks:
       - id: black
-        language_version: python3.14
+        language_version: python3.13
 
   - repo: https://github.com/pycqa/isort
     rev: 5.12.0
@@ -971,7 +971,7 @@ echo "Build complete! Release files are in dist/"
 ### Continuous Integration Configuration
 ```dockerfile
 # Dockerfile for testing environment
-FROM python:3.14-slim
+FROM python:3.13-slim
 
 WORKDIR /app
 
@@ -1045,5 +1045,5 @@ release:	## Build release packages
 	./scripts/build_release.sh
 ```
 
-This comprehensive tooling and automation setup provides the foundation for efficient development, testing, and deployment of the Deadline port from ZIL to Python 3.14. The tools cover static analysis, automated translation, performance profiling, testing utilities, and deployment automation.
+This comprehensive tooling and automation setup provides the foundation for efficient development, testing, and deployment of the Deadline port from ZIL to Python 3.13. The tools cover static analysis, automated translation, performance profiling, testing utilities, and deployment automation.
         
