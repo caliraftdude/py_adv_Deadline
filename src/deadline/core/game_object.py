@@ -338,6 +338,35 @@ class Room(GameObject):
             return self.visited_description
         return self.description
 
+    # Add this method to the Room class in game_object.py
+
+    def update_contents_cache(self):
+        """
+        Update cached list of visible contents in this room.
+        This improves performance for frequently accessed room contents.
+        """
+        # This is just a helper to ensure the contents list is current
+        # The actual contents are managed by the base GameObject class
+        
+        # Optional: Create a cached list of immediately visible objects
+        # (not including contents of closed containers)
+        visible_contents = []
+        
+        for obj in self.contents:
+            visible_contents.append(obj)
+            
+            # Add contents of open/transparent containers
+            if obj.has_flag(ObjectFlag.CONTAINER):
+                if obj.has_flag(ObjectFlag.OPEN) or obj.has_flag(ObjectFlag.TRANSPARENT):
+                    # Add visible contents of open containers
+                    for inner_obj in obj.contents:
+                        if not inner_obj.has_flag(ObjectFlag.HIDDEN):
+                            visible_contents.append(inner_obj)
+        
+        # Store as a cached property
+        self._visible_contents_cache = visible_contents
+        
+        return visible_contents
 
 class Item(GameObject):
     """
