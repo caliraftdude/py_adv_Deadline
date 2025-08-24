@@ -772,100 +772,321 @@ class Furniture(GameObject):
 
 # Utility functions for object management
 
-def create_object_from_data(data: Dict[str, Any], object_id: str) -> GameObject:
+#def create_object_from_data(data: Dict[str, Any], object_id: str) -> GameObject:
+def create_game_object_from_data(object_id: str, data: Dict[str, Any]) -> GameObject:
     """
-    Factory function to create appropriate object type from data
+    Factory function to create game objects from JSON data.
+    
+    Determines object type based on:
+    1. Explicit 'type' field
+    2. Presence of type-specific fields (exits, schedule, etc.)
+    3. Flags that indicate type
+    
+    Args:
+        object_id: Unique identifier for the object
+        data: Dictionary containing object data from JSON
+        
+    Returns:
+        GameObject subclass instance
     """
-    # Determine object type from flags or explicit type
-    obj_type = data.get('type', 'item').lower()
+    
+    # Helper function to parse flags
+    def parse_flags(flag_list: List[str]) -> ObjectFlag:
+        """Parse string flags to ObjectFlag enum"""
+        flags = ObjectFlag.NONE
+        for flag_str in flag_list:
+            try:
+                # Handle both lowercase and uppercase
+                flag_name = flag_str.upper()
+                if hasattr(ObjectFlag, flag_name):
+                    flags |= getattr(ObjectFlag, flag_name)
+                else:
+                    logger.warning(f"Unknown flag '{flag_str}' for object '{object_id}'")
+            except Exception as e:
+                logger.error(f"Error parsing flag '{flag_str}': {e}")
+        return flags
+    
+    # Helper function to extract base properties
+    def get_base_kwargs(data: Dict[str, Any], flags: ObjectFlag) -> Dict[str, Any]:
+        """Extract common properties for all game objects"""
+        return {
+            'id': object_id,
+            'name': data.get('name', object_id.replace('_', ' ').title()),
+            'description': data.get('description', ''),
+            'initial_description': data.get('initial_description'),
+            'flags': flags,
+            'synonyms': data.get('synonyms', []),
+            'adjectives': data.get('adjectives', [])
+        }
+    
+    # Parse flags first as they may influence type detection
     flags_list = data.get('flags', [])
+    flags = parse_flags(flags_list)
     
-    # Convert string flags to ObjectFlag
-    flags = ObjectFlag.NONE
-    for flag_str in flags_list:
-        try:
-            flag_name = flag_str.upper()
-            if hasattr(ObjectFlag, flag_name):
-                flags |= getattr(ObjectFlag, flag_name)
-        except:
-            logger.warning(f"Unknown flag: {flag_str}")
+    # Get explicit type or try to infer it
+    obj_type = data.get('type', '').lower()
     
-    # Create appropriate object type
-    kwargs = {
-        'id': object_id,
-        'name': data.get('name', object_id),
-        'description': data.get('description', ''),
-        'flags': flags,
-        'synonyms': data.get('synonyms', []),
-        'adjectives': data.get('adjectives', [])
-    }
+    # Type detection based on data structure and flags
     
-    # Add type-specific properties
-    if obj_type == 'room':
-        kwargs['exits'] = data.get('exits', {})
-        kwargs['light_needed'] = data.get('light_needed', False)
-        return Room(**kwargs)
+    # 1. Check for Room (has exits or explicitly typed)
+    if obj_type == 'room' or 'exits' in data:
+        kwargs = get_base_kwargs(data, flags)
+        kwargs.update({
+            'exits': data.get('exits', {}),
+            'light_needed': data.get('light_needed', False),
+            'visited_description': data.get('visited_description', '')
+        })
+        obj = Room(**kwargs)
+        logger.debug(f"Created Room: {object_id}")
+        return obj
     
-    elif obj_type == 'character' or 'person' in flags_list:
-        kwargs['knowledge'] = data.get('knowledge', {})
-        kwargs['schedule'] = data.get('schedule', [])
-        kwargs['topics'] = data.get('topics', {})
-        kwargs['trust_level'] = data.get('trust_level', 0)
-        return Character(**kwargs)
+    # 2. Check for Character/NPC (has schedule, dialogue, or person flag)
+    elif (obj_type in ['character', 'npc', 'person'] or 
+          'schedule' in data or 
+          'dialogue' in data or 
+          'topics' in data or
+          flags & ObjectFlag.PERSON):
+        kwargs = get_base_kwargs(data, flags | ObjectFlag.PERSON)
+        kwargs.update({
+            'dialogue_state': data.get('dialogue_state', {}),
+            'knowledge': data.get('knowledge', {}),
+            'schedule': data.get('schedule', []),
+            'topics': data.get('topics', {}),
+            'current_activity': data.get('current_activity', 'idle'),
+            'trust_level': data.get('trust_level', 0),
+            'suspicion_level': data.get('suspicion_level', 0)
+        })
+        obj = Character(**kwargs)
+        logger.debug(f"Created Character: {object_id}")
+        return obj
     
-    elif obj_type == 'container' or 'container' in flags_list:
-        kwargs['capacity'] = data.get('capacity', 10)
-        kwargs['key_id'] = data.get('key_id')
-        return Container(**kwargs)
+    # 3. Check for Door (connects rooms)
+    elif obj_type == 'door' or 'connects' in data:
+        kwargs = get_base_kwargs(data, flags)
+        connects = data.get('connects', [])
+        if len(connects) != 2:
+            logger.warning(f"Door {object_id} should connect exactly 2 rooms, got {len(connects)}")
+            connects = (connects + [None, None])[:2]  # Ensure we have 2 elements
+        
+        kwargs.update({
+            'connects': tuple(connects),
+            'key_id': data.get('key_id'),
+            'both_sides': data.get('both_sides', True),
+            'locked_message': data.get('locked_message', "It's locked."),
+            'closed_message': data.get('closed_message', "It's closed.")
+        })
+        obj = Door(**kwargs)
+        logger.debug(f"Created Door: {object_id}")
+        return obj
     
-    elif obj_type == 'door':
-        kwargs['connects'] = tuple(data.get('connects', []))
-        kwargs['key_id'] = data.get('key_id')
-        kwargs['both_sides'] = data.get('both_sides', True)
-        return Door(**kwargs)
+    # 4. Check for Container (has capacity or container flag)
+    elif (obj_type == 'container' or 
+          'capacity' in data or 
+          flags & ObjectFlag.CONTAINER):
+        kwargs = get_base_kwargs(data, flags | ObjectFlag.CONTAINER)
+        kwargs.update({
+            'capacity': data.get('capacity', 10),
+            'key_id': data.get('key_id'),
+            'open_message': data.get('open_message', "You open it."),
+            'close_message': data.get('close_message', "You close it."),
+            'already_open_message': data.get('already_open_message', "It's already open."),
+            'already_closed_message': data.get('already_closed_message', "It's already closed.")
+        })
+        
+        # Set initial open/locked state
+        if data.get('is_open', False):
+            kwargs['flags'] |= ObjectFlag.OPEN
+        if data.get('is_locked', False):
+            kwargs['flags'] |= ObjectFlag.LOCKED
+            
+        obj = Container(**kwargs)
+        logger.debug(f"Created Container: {object_id}")
+        return obj
     
-    elif obj_type == 'evidence' or data.get('evidence', False):
-        kwargs['evidence_value'] = data.get('evidence_value', 5)
-        kwargs['reveals'] = data.get('reveals', [])
-        kwargs['contradicts'] = data.get('contradicts', [])
-        kwargs['required_for_solution'] = data.get('required_for_solution', False)
-        return Evidence(**kwargs)
+    # 5. Check for Evidence (special item type for Deadline)
+    elif obj_type == 'evidence' or data.get('evidence', False) or flags & ObjectFlag.EVIDENCE:
+        kwargs = get_base_kwargs(data, flags | ObjectFlag.EVIDENCE | ObjectFlag.TAKEABLE)
+        kwargs.update({
+            'size': data.get('size', 1),
+            'weight': data.get('weight', 1),
+            'value': data.get('value', 0),
+            'evidence_value': data.get('evidence_value', 10),
+            'evidence_description': data.get('evidence_description', ''),
+            'analysis_result': data.get('analysis_result', '')
+        })
+        
+        # Evidence items might be readable
+        if data.get('readable') or data.get('text'):
+            kwargs['flags'] |= ObjectFlag.READABLE
+            kwargs['text'] = data.get('text', '')
+            
+        obj = Evidence(**kwargs)
+        logger.debug(f"Created Evidence: {object_id}")
+        return obj
     
-    elif obj_type == 'weapon' or 'weapon' in flags_list:
-        kwargs['damage'] = data.get('damage', 1)
-        kwargs['used_in_crime'] = data.get('used_in_crime', False)
-        kwargs['fingerprints'] = data.get('fingerprints', [])
-        return Weapon(**kwargs)
+    # 6. Check for Player (special character type)
+    elif obj_type == 'player':
+        kwargs = get_base_kwargs(data, flags)
+        kwargs.update({
+            'max_carry': data.get('max_carry', 10),
+            'score': data.get('score', 0)
+        })
+        obj = Player(**kwargs)
+        logger.debug(f"Created Player: {object_id}")
+        return obj
     
-    elif obj_type == 'document' or 'readable' in flags_list:
-        kwargs['text_content'] = data.get('text_content', '')
-        kwargs['pages'] = data.get('pages', [])
-        kwargs['signature'] = data.get('signature')
-        kwargs['date'] = data.get('date')
-        return Document(**kwargs)
-    
-    elif obj_type == 'light' or 'light' in flags_list:
-        kwargs['fuel_remaining'] = data.get('fuel_remaining')
-        kwargs['fuel_type'] = data.get('fuel_type', 'battery')
-        kwargs['burn_rate'] = data.get('burn_rate', 1)
-        return Light(**kwargs)
-    
-    elif obj_type == 'furniture':
-        kwargs['can_sit'] = data.get('can_sit', False)
-        kwargs['can_stand_on'] = data.get('can_stand_on', False)
-        kwargs['can_hide_behind'] = data.get('can_hide_behind', False)
-        kwargs['moveable'] = data.get('moveable', False)
-        return Furniture(**kwargs)
-    
+    # 7. Default to Item (basic takeable object)
     else:
-        # Default to Item for takeable objects, GameObject otherwise
-        if 'takeable' in flags_list:
-            kwargs['size'] = data.get('size', 1)
-            kwargs['weight'] = data.get('weight', 1)
-            kwargs['value'] = data.get('value', 0)
-            return Item(**kwargs)
-        else:
-            return GameObject(**kwargs)
+        # Determine if it should be takeable
+        if flags & ObjectFlag.TAKEABLE or data.get('takeable', False):
+            flags |= ObjectFlag.TAKEABLE
+            
+        kwargs = get_base_kwargs(data, flags)
+        kwargs.update({
+            'size': data.get('size', 1),
+            'weight': data.get('weight', 1),
+            'value': data.get('value', 0)
+        })
+        
+        # Check for readable items
+        if data.get('readable') or data.get('text'):
+            kwargs['flags'] |= ObjectFlag.READABLE
+            kwargs['text'] = data.get('text', '')
+        
+        # Check for wearable items
+        if data.get('wearable'):
+            kwargs['flags'] |= ObjectFlag.WEARABLE
+            kwargs['wear_message'] = data.get('wear_message', f"You put on the {kwargs['name']}.")
+            kwargs['remove_message'] = data.get('remove_message', f"You take off the {kwargs['name']}.")
+        
+        # Check for edible/drinkable items
+        if data.get('edible'):
+            kwargs['flags'] |= ObjectFlag.EDIBLE
+            kwargs['eat_message'] = data.get('eat_message', f"You eat the {kwargs['name']}.")
+        
+        if data.get('drinkable'):
+            kwargs['flags'] |= ObjectFlag.DRINKABLE
+            kwargs['drink_message'] = data.get('drink_message', f"You drink the {kwargs['name']}.")
+        
+        # Check for light sources
+        if data.get('light_source'):
+            kwargs['flags'] |= ObjectFlag.LIGHT
+            kwargs['on_message'] = data.get('on_message', "You turn it on.")
+            kwargs['off_message'] = data.get('off_message', "You turn it off.")
+            if data.get('is_on', False):
+                kwargs['flags'] |= ObjectFlag.ON
+        
+        obj = Item(**kwargs)
+        logger.debug(f"Created Item: {object_id}")
+    
+    # Set additional custom properties that aren't part of constructor
+    for key, value in data.items():
+        # Skip properties we've already handled
+        if key not in ['type', 'name', 'description', 'flags', 'synonyms', 
+                      'adjectives', 'exits', 'capacity', 'key_id', 'connects',
+                      'schedule', 'dialogue', 'topics', 'knowledge', 'size',
+                      'weight', 'value', 'evidence_value', 'text', 'readable',
+                      'wearable', 'edible', 'drinkable', 'light_source',
+                      'is_open', 'is_locked', 'is_on', 'takeable',
+                      'initial_description', 'visited_description',
+                      'dialogue_state', 'current_activity', 'trust_level',
+                      'suspicion_level', 'evidence_description', 'analysis_result',
+                      'max_carry', 'score', 'light_needed', 'both_sides',
+                      'location', 'contents']:  # These are handled elsewhere
+            # Store as custom property
+            obj.set_property(key, value)
+            logger.debug(f"Set custom property '{key}' = '{value}' for {object_id}")
+    
+    # Handle initial location (will be set by WorldManager)
+    if 'location' in data:
+        obj.initial_location = data['location']
+    
+    # Handle initial contents (will be populated by WorldManager)
+    if 'contents' in data:
+        obj.initial_contents = data['contents']
+    
+    return obj
+
+#######
+#######  These might not be necessary... unclear
+#######
+
+# Additional classes that should be defined if not already present:
+
+class Evidence(Item):
+    """
+    Special item class for evidence in Deadline
+    Inherits from Item but adds evidence-specific properties
+    """
+    
+    def __init__(self, evidence_value: int = 10, 
+                 evidence_description: str = "",
+                 analysis_result: str = "",
+                 **kwargs):
+        # Ensure evidence flag is set
+        kwargs['flags'] = kwargs.get('flags', ObjectFlag.NONE) | ObjectFlag.EVIDENCE
+        super().__init__(**kwargs)
+        
+        self.evidence_value = evidence_value
+        self.evidence_description = evidence_description
+        self.analysis_result = analysis_result
+        self.analyzed = False
+    
+    def analyze(self) -> str:
+        """Analyze the evidence"""
+        self.analyzed = True
+        if self.analysis_result:
+            return self.analysis_result
+        return f"You carefully examine the {self.name} but find nothing unusual."
+    
+    def get_description(self, detailed: bool = False) -> str:
+        """Override to include evidence description when analyzed"""
+        base_desc = super().get_description(detailed)
+        if self.analyzed and self.evidence_description:
+            return f"{base_desc}\n{self.evidence_description}"
+        return base_desc
 
 
-# End of game_object.py
+class Door(GameObject):
+    """
+    Door class - connects two rooms
+    Can be locked, opened, closed
+    """
+    
+    def __init__(self, connects: tuple, key_id: Optional[str] = None,
+                 both_sides: bool = True, locked_message: str = "It's locked.",
+                 closed_message: str = "It's closed.", **kwargs):
+        super().__init__(**kwargs)
+        
+        self.connects = connects  # Tuple of (room1_id, room2_id)
+        self.key_id = key_id  # ID of key that unlocks this door
+        self.both_sides = both_sides  # Can be opened from both sides?
+        self.locked_message = locked_message
+        self.closed_message = closed_message
+    
+    def get_other_side(self, current_room_id: str) -> Optional[str]:
+        """Get the room on the other side of this door"""
+        if current_room_id == self.connects[0]:
+            return self.connects[1]
+        elif current_room_id == self.connects[1]:
+            return self.connects[0]
+        return None
+    
+    def can_pass_through(self, from_room_id: str) -> tuple[bool, str]:
+        """Check if door can be passed through from given room"""
+        if self.has_flag(ObjectFlag.LOCKED):
+            return False, self.locked_message
+        if not self.has_flag(ObjectFlag.OPEN):
+            return False, self.closed_message
+        if not self.both_sides and from_room_id != self.connects[0]:
+            return False, "You can't go through from this side."
+        return True, ""
+    
+    def unlock_with(self, key: GameObject) -> bool:
+        """Attempt to unlock door with a key"""
+        if not self.has_flag(ObjectFlag.LOCKED):
+            return False  # Already unlocked
+        if key.id == self.key_id:
+            self.clear_flag(ObjectFlag.LOCKED)
+            return True
+        return False
