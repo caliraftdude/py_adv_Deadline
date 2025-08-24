@@ -243,43 +243,137 @@ class WorldManager:
         logger.info(f"Created {len(self.characters)} characters")
     
     def _set_initial_positions(self):
-        """Set initial positions for objects and characters"""
-        # Place player
-        if self.current_room_id and self.current_room_id in self.rooms:
+        """
+        Set initial positions for objects and characters.
+        This method runs after all objects have been created and uses the
+        initial_location and initial_contents attributes set during creation.
+        """
+        
+        # 1. Place the player in the starting room
+        if self.player and self.current_room_id and self.current_room_id in self.rooms:
             self.player.move_to(self.rooms[self.current_room_id])
+            logger.debug(f"Placed player in starting room: {self.current_room_id}")
+        elif self.player and self.rooms:
+            # Fallback: place player in first available room
+            first_room = next(iter(self.rooms.values()))
+            self.player.move_to(first_room)
+            self.current_room_id = first_room.id
+            logger.warning(f"No starting room specified, placing player in: {first_room.id}")
         
-        # Place objects in rooms
-        rooms_data = self.game_data.get('rooms', {})
-        for room_id, room_info in rooms_data.items():
-            if room_id in self.rooms:
-                room = self.rooms[room_id]
-                for obj_id in room_info.get('contents', []):
-                    if obj_id in self.objects:
-                        self.objects[obj_id].move_to(room)
-        
-        # Place objects in containers
-        objects_data = self.game_data.get('objects', {})
-        for obj_id, obj_info in objects_data.items():
-            if 'contents' in obj_info and obj_id in self.objects:
-                container = self.objects[obj_id]
-                for content_id in obj_info['contents']:
-                    if content_id in self.objects:
-                        self.objects[content_id].move_to(container)
-        
-        # Place objects by location property
-        for obj_id, obj_info in objects_data.items():
-            if 'location' in obj_info and obj_id in self.objects:
-                location_id = obj_info['location']
-                if location_id in self.objects:
-                    self.objects[obj_id].move_to(self.objects[location_id])
-        
-        # Place characters
-        characters_data = self.game_data.get('characters', {})
-        for char_id, char_info in characters_data.items():
-            if 'location' in char_info and char_id in self.characters:
-                location_id = char_info['location']
+        # 2. Place objects based on their initial_location attribute
+        # This includes items, containers, evidence, doors, etc.
+        for obj_id, obj in self.objects.items():
+            # Skip rooms, characters, and the player (handled separately)
+            if isinstance(obj, (Room, Character, Player)):
+                continue
+            
+            if hasattr(obj, 'initial_location') and obj.initial_location:
+                location_id = obj.initial_location
+                
+                # Check if location is a room
                 if location_id in self.rooms:
-                    self.characters[char_id].move_to(self.rooms[location_id])
+                    obj.move_to(self.rooms[location_id])
+                    logger.debug(f"Placed {obj_id} in room {location_id}")
+                
+                # Check if location is another object (container)
+                elif location_id in self.objects:
+                    container = self.objects[location_id]
+                    if container.can_contain(obj):
+                        obj.move_to(container)
+                        logger.debug(f"Placed {obj_id} in container {location_id}")
+                    else:
+                        logger.warning(f"Cannot place {obj_id} in {location_id} - container cannot hold it")
+                
+                else:
+                    logger.warning(f"Invalid initial location '{location_id}' for object {obj_id}")
+        
+        # 3. Place characters based on their initial_location attribute
+        for char_id, character in self.characters.items():
+            if hasattr(character, 'initial_location') and character.initial_location:
+                location_id = character.initial_location
+                
+                if location_id in self.rooms:
+                    character.move_to(self.rooms[location_id])
+                    logger.debug(f"Placed character {char_id} in room {location_id}")
+                else:
+                    logger.warning(f"Invalid initial location '{location_id}' for character {char_id}")
+        
+        # 4. Populate containers with their initial contents
+        # This handles both objects and rooms that can contain things
+        for obj_id, obj in list(self.objects.items()) + list(self.rooms.items()):
+            if hasattr(obj, 'initial_contents') and obj.initial_contents:
+                for content_id in obj.initial_contents:
+                    if content_id in self.objects:
+                        content_obj = self.objects[content_id]
+                        
+                        # Skip if object already has a location (avoid conflicts)
+                        if content_obj.location is not None:
+                            logger.debug(f"Object {content_id} already placed, skipping container placement")
+                            continue
+                        
+                        # Try to place the object
+                        if isinstance(obj, Room) or obj.can_contain(content_obj):
+                            content_obj.move_to(obj)
+                            logger.debug(f"Placed {content_id} in {obj_id}")
+                        else:
+                            logger.warning(f"Cannot place {content_id} in {obj_id} - container cannot hold it")
+                    else:
+                        logger.warning(f"Content object {content_id} not found for container {obj_id}")
+        
+        # 5. Validate all objects have been placed somewhere
+        orphaned_objects = []
+        for obj_id, obj in self.objects.items():
+            # Skip rooms and the player (they don't need locations)
+            if isinstance(obj, (Room, Player)):
+                continue
+            
+            if obj.location is None:
+                orphaned_objects.append(obj_id)
+        
+        if orphaned_objects:
+            logger.warning(f"The following objects have no location: {orphaned_objects}")
+            # Optionally place orphaned objects in a default location
+            if self.rooms:
+                default_room = next(iter(self.rooms.values()))
+                for obj_id in orphaned_objects:
+                    self.objects[obj_id].move_to(default_room)
+                    logger.info(f"Placed orphaned object {obj_id} in default room {default_room.id}")
+        
+        # 6. Special handling for doors (if they need to be registered with rooms)
+        from ..core.game_object import Door
+        for obj_id, obj in self.objects.items():
+            if isinstance(obj, Door):
+                # Doors connect rooms but may not be "in" a room
+                # They might need special registration with the rooms they connect
+                if hasattr(obj, 'connects') and obj.connects:
+                    for room_id in obj.connects:
+                        if room_id and room_id in self.rooms:
+                            room = self.rooms[room_id]
+                            # Store door reference in room for easy access
+                            if not hasattr(room, 'doors'):
+                                room.doors = {}
+                            room.doors[obj_id] = obj
+                            logger.debug(f"Registered door {obj_id} with room {room_id}")
+        
+        # 7. Initialize room contents lists for quick access
+        # This creates a cached list of what's visible in each room
+        for room in self.rooms.values():
+            room.update_contents_cache()
+        
+        # Log summary
+        logger.info("Initial positions set:")
+        logger.info(f"  - Player in room: {self.current_room_id}")
+        logger.info(f"  - {len([o for o in self.objects.values() if o.location])} objects placed")
+        logger.info(f"  - {len([c for c in self.characters.values() if c.location])} characters placed")
+        
+        # Verify critical game objects are placed (data-driven from config)
+        if 'critical_objects' in self.game_data.get('config', {}):
+            for critical_id in self.game_data['config']['critical_objects']:
+                if critical_id in self.objects:
+                    if self.objects[critical_id].location is None:
+                        logger.error(f"Critical object {critical_id} has no location!")
+                else:
+                    logger.error(f"Critical object {critical_id} not found!")
     
     def get_current_room(self) -> Optional[Room]:
         """Get the room the player is currently in"""
