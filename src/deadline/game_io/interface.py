@@ -2,22 +2,20 @@
 """
 Game interface - handles input/output with the player
 """
-from typing import TYPE_CHECKING
-from ..core.flags import ObjectFlag
+from typing import TYPE_CHECKING, Dict, Any
+from core.flags import ObjectFlag
 if TYPE_CHECKING:
     from ..core.game_object import Room
     
-from typing import Optional, List, Dict, Any
-import sys
-from prompt_toolkit import prompt
 from prompt_toolkit.history import InMemoryHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+from prompt_toolkit import prompt
 from rich.console import Console
 from rich.text import Text
 from rich.panel import Panel
 from rich.columns import Columns
 
-from ..core.game_object import Room, GameObject
+from core.game_object import Room, GameObject
 from .output_formatter import OutputFormatter
 
 

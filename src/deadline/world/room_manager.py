@@ -4,8 +4,8 @@ Room management system - handles room navigation and descriptions
 """
 from typing import Any
 from typing import Dict, List, Optional, Set
-from ..core.game_object import Room
-from ..core.flags import ObjectFlag
+from core.game_object import Room
+from core.flags import ObjectFlag
 
 class RoomManager:
     """Manages all rooms and navigation"""

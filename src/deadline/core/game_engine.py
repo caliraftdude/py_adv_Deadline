@@ -149,12 +149,13 @@ class GameEngine:
         Initialize all game subsystems
         Equivalent to ZIL's initialization routines
         """
-        from ..world.world_manager import WorldManager
-        from ..parser.parser import GameParser
-        from ..time.time_manager import TimeManager
-        from ..commands.base_command import CommandProcessor
-        from ..io.interface import GameInterface
-        from ..io.save_system import SaveManager
+        from world.world_manager import WorldManager
+        from parser.parser import GameParser
+
+        from game_time.time_manager import TimeManager
+        from commands.base_command import CommandProcessor
+        from game_io.interface import GameInterface
+        from game_io.save_system import SaveManager
         
         # Initialize world from data
         self.world_manager = WorldManager(self.game_data)
@@ -399,7 +400,7 @@ class GameEngine:
         Process a scheduled event
         Equivalent to ZIL's daemon/fuse processing
         """
-        from ..time.events import EventType
+        from ..game_time.events import EventType
         
         event_type = event.event_type
         

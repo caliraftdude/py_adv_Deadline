@@ -4,10 +4,10 @@ Meta commands - save, load, quit, inventory, etc.
 """
 from typing import TYPE_CHECKING, List
 if TYPE_CHECKING:
-    from ..parser.parser import ParseResult
+    from parser.parser import ParseResult
     
 from .base_command import Command, CommandResult, CommandStatus
-from ..core.game_engine import GameState
+from core.game_engine import GameState
 
 
 class SaveCommand(Command):
@@ -75,7 +75,7 @@ class LoadCommand(Command):
                 # Redisplay current room
                 current_room = self.world.get_current_room()
                 if current_room:
-                    from ..io.interface import GameInterface
+                    from ..game_io.interface import GameInterface
                     interface = GameInterface(self.engine)
                     interface.display_room(current_room)
                 
@@ -107,7 +107,7 @@ class QuitCommand(Command):
     
     def execute(self, parse_result) -> CommandResult:
         # Confirm quit
-        from ..io.interface import GameInterface
+        from ..game_io.interface import GameInterface
         interface = GameInterface(self.engine)
         
         if interface.confirm("Are you sure you want to quit?"):

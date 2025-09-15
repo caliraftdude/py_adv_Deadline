@@ -9,7 +9,7 @@ from pathlib import Path
 import logging
 from typing import Optional
 
-from deadline.core.game_engine import GameEngine
+from core.game_engine import GameEngine
 
 
 def setup_logging(debug: bool = False):

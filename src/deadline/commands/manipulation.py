@@ -6,7 +6,7 @@ Translated from ZIL verb implementations
 
 from typing import Optional, List
 from .base_command import Command, CommandResult, CommandStatus, ManipulationCommand
-from ..core.game_object import GameObject, ObjectFlag, Container, Character
+from core.game_object import GameObject, ObjectFlag, Container, Character
 import logging
 
 logger = logging.getLogger(__name__)

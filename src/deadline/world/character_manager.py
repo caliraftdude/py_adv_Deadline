@@ -5,7 +5,7 @@ Character management system - handles NPCs and their behaviors
 from typing import Any
 from typing import Dict, List, Optional, Any
 import logging
-from ..core.game_object import Character, Room
+from core.game_object import Character, Room
 
 logger = logging.getLogger(__name__)
 

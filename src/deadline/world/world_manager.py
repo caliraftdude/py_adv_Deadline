@@ -4,15 +4,15 @@ World management system - manages all game objects, rooms, and characters
 """
 from typing import TYPE_CHECKING, Tuple
 if TYPE_CHECKING:
-    from ..parser.parser import ParseResult
+    from parser.parser import ParseResult
 
 from typing import Dict, List, Optional, Any, Set
 import json
 from pathlib import Path
 import logging
 
-from ..core.game_object import GameObject, Room, Item, Character, Player
-from ..core.flags import ObjectFlag
+from core.game_object import GameObject, Room, Item, Character, Player
+from core.flags import ObjectFlag
 from .room_manager import RoomManager
 from .character_manager import CharacterManager
 from .evidence_manager import EvidenceManager
@@ -168,7 +168,7 @@ class WorldManager:
                 logger.error(f"Failed to create room {room_id}: {e}")
                 continue
     
-    logger.info(f"Created {len(self.rooms)} rooms")
+        logger.info(f"Created {len(self.rooms)} rooms")
     
     def _create_objects(self):
         """Create all game objects from data"""

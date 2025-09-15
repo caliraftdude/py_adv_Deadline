@@ -3,12 +3,12 @@
 Communication commands - talking to NPCs and making accusations
 """
 from typing import TYPE_CHECKING
-from ..core.game_engine import GameState
+from core.game_engine import GameState
 if TYPE_CHECKING:
-    from ..parser.parser import ParseResult
+    from parser.parser import ParseResult
 
 from .base_command import Command, CommandResult, CommandStatus
-from ..core.flags import ObjectFlag
+from core.flags import ObjectFlag
 
 
 class TalkCommand(Command):

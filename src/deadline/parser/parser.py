@@ -15,17 +15,17 @@ logger = logging.getLogger(__name__)
 
 
 class WordType(Enum):
-    """Word types in vocabulary - matches ZIL word types"""
-    VERB = auto()
-    NOUN = auto()
-    ADJECTIVE = auto()
-    PREPOSITION = auto()
-    ARTICLE = auto()
-    CONJUNCTION = auto()
-    DIRECTION = auto()
-    NUMBER = auto()
-    SPECIAL = auto()
-    UNKNOWN = auto()
+    # Word types in vocabulary - matches ZIL word types
+    VERB = 1
+    NOUN = 2
+    ADJECTIVE = 3
+    PREPOSITION = 4
+    ARTICLE = 5
+    CONJUNCTION = 6
+    DIRECTION = 7
+    NUMBER = 8
+    SPECIAL = 9
+    UNKNOWN = 10
 
 
 @dataclass

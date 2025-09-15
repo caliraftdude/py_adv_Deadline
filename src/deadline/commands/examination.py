@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from ..parser.parser import ParseResult
 
 from .base_command import Command, CommandResult, CommandStatus
-from ..core.flags import ObjectFlag
+from core.flags import ObjectFlag
 
 
 class LookCommand(Command):
@@ -26,7 +26,7 @@ class LookCommand(Command):
             )
         
         # Redisplay room description
-        from ..io.interface import GameInterface
+        from ..game_io.interface import GameInterface
         interface = GameInterface(self.engine)
         interface.display_room(current_room)
         

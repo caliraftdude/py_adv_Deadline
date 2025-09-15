@@ -11,9 +11,9 @@ from enum import Enum, auto
 import logging
 
 if TYPE_CHECKING:
-    from ..core.game_engine import GameEngine
-    from ..core.game_object import GameObject
-    from ..parser.parser import ParseResult
+    from core.game_engine import GameEngine
+    from core.game_object import GameObject
+    from parser.parser import ParseResult
 
 logger = logging.getLogger(__name__)
 
@@ -245,12 +245,13 @@ class CommandProcessor:
             return CommandResult.error(f"I don't know how to '{verb}'.")
         
         # Check if command can be executed
-        try:
-            if not command.can_execute(parse_result):
-                return CommandResult.failure("You can't do that right now.")
-        except Exception as e:
-            logger.warning(f"Error checking can_execute for {verb}: {e}")
-            # Continue anyway
+        if not command.can_execute(parse_result):
+            # Get specific failure message if command provides one
+            if hasattr(command, 'get_failure_reason'):
+                message = command.get_failure_reason(parse_result)
+            else:
+                message = "You can't do that right now."
+            return CommandResult.failure(message)
         
         # Check for darkness (most commands need light)
         if hasattr(command, 'require_light') and command.require_light():

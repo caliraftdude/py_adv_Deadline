@@ -366,173 +366,6 @@
     }
   },
   
-  "objects": {
-    "medicine_bottle": {
-      "name": "medicine bottle",
-      "description": "A prescription bottle labeled 'Ebullion - Take 2 tablets for sleep as needed. Prescription #69105'. The bottle is nearly empty, containing only a few tablets.",
-      "synonyms": ["george", "son"],
-      "location": "george_room",
-      "trust_level": -5,
-      "suspicious": true,
-      "knowledge": {
-        "father": "We didn't always see eye to eye, but I loved him.",
-        "argument": "Yes, we argued about business, but that's normal.",
-        "alibi": "I was in my room all night. Ask anyone.",
-        "will": "I don't know what you're talking about.",
-        "meeting": "There was no meeting planned that night.",
-        "business": "Father's business was his own affair.",
-        "focus": "I don't know anything about Focus.",
-        "dunbar": "Ms. Dunbar? She's father's secretary.",
-        "money": "I don't need father's money."
-      },
-      "conversation_topics": {
-        "inheritance": "I was supposed to inherit, but father changed his mind.",
-        "debts": "I may have some gambling debts, but nothing serious."
-      },
-      "evidence_topics": ["inheritance", "debts"],
-      "show_reactions": {
-        "will": "George turns pale. 'Where did you get that?'",
-        "calendar": "George looks nervous. 'I don't know anything about that meeting.'"
-      },
-      "schedule": [
-        {"time": 480, "location": "george_room", "activity": "hiding"},
-        {"time": 540, "location": "study", "activity": "searching"},
-        {"time": 600, "location": "dining_room", "activity": "eating"},
-        {"time": 660, "location": "garden", "activity": "smoking"},
-        {"time": 720, "location": "george_room", "activity": "packing"},
-        {"time": 780, "location": "library", "activity": "searching"},
-        {"time": 840, "location": "george_room", "activity": "nervous"}
-      ]
-    },
-    
-    "baxter": {
-      "name": "Baxter",
-      "description": "The butler. Professional and discrete, but observant.",
-      "synonyms": ["baxter", "butler"],
-      "location": "main_hall",
-      "trust_level": 5,
-      "knowledge": {
-        "household": "I've served the Robner family for fifteen years.",
-        "george": "Master George came home late that night, around 11:30.",
-        "argument": "I heard raised voices from the study around 11 PM.",
-        "mrs_robner": "Mrs. Robner retired early that evening.",
-        "visitors": "No unexpected visitors that night, Inspector.",
-        "focus": "Mr. Robner mentioned Focus Corporation several times.",
-        "dunbar": "Ms. Dunbar worked late with Mr. Robner that evening.",
-        "murder": "Murder? But the door was locked from inside!",
-        "ladder": "The gardener's ladder? It's usually in the shed."
-      },
-      "conversation_topics": {
-        "routine": "I always check the house before retiring at midnight.",
-        "sounds": "I heard footsteps on the stairs around 11:30."
-      },
-      "evidence_topics": ["sounds", "argument"],
-      "show_reactions": {
-        "ticket_stub": "Baxter looks surprised. 'Montreal? How odd.'",
-        "business_papers": "Baxter nods. 'Yes, Mr. Robner was quite worried about those.'"
-      },
-      "schedule": [
-        {"time": 480, "location": "main_hall", "activity": "duties"},
-        {"time": 540, "location": "dining_room", "activity": "serving"},
-        {"time": 600, "location": "kitchen", "activity": "supervising"},
-        {"time": 720, "location": "main_hall", "activity": "greeting"},
-        {"time": 780, "location": "study", "activity": "cleaning"},
-        {"time": 900, "location": "main_hall", "activity": "duties"}
-      ]
-    },
-    
-    "dunbar": {
-      "name": "Ms. Dunbar",
-      "description": "Mr. Robner's secretary. She appears calm and professional.",
-      "synonyms": ["dunbar", "secretary", "ms"],
-      "location": "dunbar_room",
-      "trust_level": -3,
-      "knowledge": {
-        "robner": "Mr. Robner was a good employer.",
-        "business": "The business was in some trouble, yes.",
-        "focus": "Focus Corporation was interested in a merger.",
-        "george": "George and his father didn't get along well.",
-        "alibi": "I was in my room all night.",
-        "work": "I often worked late with Mr. Robner.",
-        "pills": "I don't know anything about Mr. Robner's medication.",
-        "loblo": "LoBlo? That's my blood pressure medication."
-      },
-      "conversation_topics": {
-        "relationship": "My relationship with Mr. Robner was strictly professional.",
-        "canada": "Canada? I've never been there."
-      },
-      "evidence_topics": ["relationship"],
-      "show_reactions": {
-        "loblo": "Ms. Dunbar looks uncomfortable. 'That's my private medication.'",
-        "ticket_stub": "Ms. Dunbar's face goes white. 'I... I can explain.'",
-        "saucer": "Ms. Dunbar looks nervous. 'I don't know how my fingerprints got there.'"
-      },
-      "schedule": [
-        {"time": 480, "location": "dunbar_room", "activity": "working"},
-        {"time": 600, "location": "dining_room", "activity": "breakfast"},
-        {"time": 660, "location": "study", "activity": "working"},
-        {"time": 780, "location": "dunbar_room", "activity": "packing"},
-        {"time": 840, "location": "garden", "activity": "walking"},
-        {"time": 900, "location": "dunbar_room", "activity": "nervous"}
-      ]
-    },
-    
-    "mrs_rourke": {
-      "name": "Mrs. Rourke",
-      "description": "The housekeeper. She seems upset by the tragedy.",
-      "synonyms": ["rourke", "housekeeper", "mrs"],
-      "location": "kitchen",
-      "trust_level": 3,
-      "knowledge": {
-        "household": "I've been here five years. It's a good position.",
-        "robner": "Mr. Robner was a fair employer.",
-        "george": "Young George has his troubles.",
-        "dunbar": "Ms. Dunbar keeps to herself mostly.",
-        "baxter": "Mr. Baxter runs a tight ship.",
-        "breakfast": "I prepared Mr. Robner's breakfast tray that morning.",
-        "tea": "I made tea for Mr. Robner the previous evening."
-      },
-      "conversation_topics": {
-        "stairs": "The stairs creak terribly. You can hear anyone going up or down."
-      },
-      "evidence_topics": ["stairs"],
-      "schedule": [
-        {"time": 480, "location": "kitchen", "activity": "cooking"},
-        {"time": 540, "location": "dining_room", "activity": "serving"},
-        {"time": 600, "location": "kitchen", "activity": "cleaning"},
-        {"time": 720, "location": "rourke_room", "activity": "resting"},
-        {"time": 840, "location": "kitchen", "activity": "preparing_dinner"}
-      ]
-    },
-    
-    "mcnabb": {
-      "name": "McNabb",
-      "description": "The gardener. He's angry about damage to his roses.",
-      "synonyms": ["mcnabb", "gardener", "angus"],
-      "location": "garden",
-      "trust_level": 2,
-      "knowledge": {
-        "roses": "Someone's been trampling my roses!",
-        "ladder": "My ladder's been moved! It was in the shed.",
-        "holes": "Look at these holes! Someone put a ladder here.",
-        "garden": "I take pride in this garden.",
-        "family": "The Robners are good employers.",
-        "night": "I wasn't here that night. I leave at 6 PM."
-      },
-      "conversation_topics": {
-        "damage": "The damage was done recently, maybe last night."
-      },
-      "evidence_topics": ["damage", "ladder"],
-      "schedule": [
-        {"time": 480, "location": "garden", "activity": "working"},
-        {"time": 540, "location": "shed", "activity": "getting_tools"},
-        {"time": 600, "location": "orchard", "activity": "pruning"},
-        {"time": 720, "location": "rose_garden", "activity": "upset"},
-        {"time": 780, "location": "garden_path", "activity": "working"}
-      ]
-    }
-  },
-  
   "solution": {
     "murderer": "george",
     "accomplice": "dunbar",
@@ -563,8 +396,14 @@
   
   "failure_text": "CASE UNSOLVED\n\nUnfortunately, you have failed to solve the case in time. Without sufficient evidence to prove murder, the death of Marshall Robner will remain officially listed as a suicide.\n\nThe real killer has escaped justice, and the truth may never be known.\n\nPerhaps if you had been more thorough in your investigation, or questioned the suspects more carefully, you might have uncovered the evidence needed to solve this case.",
   
-  "timeout_text": "TIME'S UP\n\nYour 12 hours have expired. The case is being closed as a suicide, as originally determined by the coroner.\n\nYou suspect there's more to the story - the inconsistencies in the evidence, the nervous behavior of certain family members, the mysterious circumstances - but without concrete proof, there's nothing more you can do.\n\nThe investigation is over. The truth will remain buried with Marshall Robner."
-}bottle", "pills", "medicine", "ebullion", "tablets"],
+  "timeout_text": "TIME'S UP\n\nYour 12 hours have expired. The case is being closed as a suicide, as originally determined by the coroner.\n\nYou suspect there's more to the story - the inconsistencies in the evidence, the nervous behavior of certain family members, the mysterious circumstances - but without concrete proof, there's nothing more you can do.\n\nThe investigation is over. The truth will remain buried with Marshall Robner.",
+
+  "objects": {
+
+  "medicine_bottle": {
+      "name": "medicine bottle",
+      "description": "A prescription bottle labeled 'Ebullion - Take 2 tablets for sleep as needed. Prescription #69105'. The bottle is nearly empty, containing only a few tablets.",
+      "synonyms": ["bottle", "pills", "medicine", "ebullion", "tablets"],
       "adjectives": ["prescription", "medicine"],
       "flags": ["takeable", "readable", "container", "evidence"],
       "size": 1,
@@ -856,4 +695,166 @@
     "george": {
       "name": "George Robner",
       "description": "George Robner, the son. He seems nervous and avoids eye contact.",
-      "synonyms": ["
+      "synonyms": ["george", "son"],
+      "location": "george_room",
+      "trust_level": -5,
+      "suspicious": true,
+      "knowledge": {
+        "father": "We didn't always see eye to eye, but I loved him.",
+        "argument": "Yes, we argued about business, but that's normal.",
+        "alibi": "I was in my room all night. Ask anyone.",
+        "will": "I don't know what you're talking about.",
+        "meeting": "There was no meeting planned that night.",
+        "business": "Father's business was his own affair.",
+        "focus": "I don't know anything about Focus.",
+        "dunbar": "Ms. Dunbar? She's father's secretary.",
+        "money": "I don't need father's money."
+      },
+      "conversation_topics": {
+        "inheritance": "I was supposed to inherit, but father changed his mind.",
+        "debts": "I may have some gambling debts, but nothing serious."
+      },
+      "evidence_topics": ["inheritance", "debts"],
+      "show_reactions": {
+        "will": "George turns pale. 'Where did you get that?'",
+        "calendar": "George looks nervous. 'I don't know anything about that meeting.'"
+      },
+      "schedule": [
+        {"time": 480, "location": "george_room", "activity": "hiding"},
+        {"time": 540, "location": "study", "activity": "searching"},
+        {"time": 600, "location": "dining_room", "activity": "eating"},
+        {"time": 660, "location": "garden", "activity": "smoking"},
+        {"time": 720, "location": "george_room", "activity": "packing"},
+        {"time": 780, "location": "library", "activity": "searching"},
+        {"time": 840, "location": "george_room", "activity": "nervous"}
+      ]
+    },
+    
+    "baxter": {
+      "name": "Baxter",
+      "description": "The butler. Professional and discrete, but observant.",
+      "synonyms": ["baxter", "butler"],
+      "location": "main_hall",
+      "trust_level": 5,
+      "knowledge": {
+        "household": "I've served the Robner family for fifteen years.",
+        "george": "Master George came home late that night, around 11:30.",
+        "argument": "I heard raised voices from the study around 11 PM.",
+        "mrs_robner": "Mrs. Robner retired early that evening.",
+        "visitors": "No unexpected visitors that night, Inspector.",
+        "focus": "Mr. Robner mentioned Focus Corporation several times.",
+        "dunbar": "Ms. Dunbar worked late with Mr. Robner that evening.",
+        "murder": "Murder? But the door was locked from inside!",
+        "ladder": "The gardener's ladder? It's usually in the shed."
+      },
+      "conversation_topics": {
+        "routine": "I always check the house before retiring at midnight.",
+        "sounds": "I heard footsteps on the stairs around 11:30."
+      },
+      "evidence_topics": ["sounds", "argument"],
+      "show_reactions": {
+        "ticket_stub": "Baxter looks surprised. 'Montreal? How odd.'",
+        "business_papers": "Baxter nods. 'Yes, Mr. Robner was quite worried about those.'"
+      },
+      "schedule": [
+        {"time": 480, "location": "main_hall", "activity": "duties"},
+        {"time": 540, "location": "dining_room", "activity": "serving"},
+        {"time": 600, "location": "kitchen", "activity": "supervising"},
+        {"time": 720, "location": "main_hall", "activity": "greeting"},
+        {"time": 780, "location": "study", "activity": "cleaning"},
+        {"time": 900, "location": "main_hall", "activity": "duties"}
+      ]
+    },
+    
+    "dunbar": {
+      "name": "Ms. Dunbar",
+      "description": "Mr. Robner's secretary. She appears calm and professional.",
+      "synonyms": ["dunbar", "secretary", "ms"],
+      "location": "dunbar_room",
+      "trust_level": -3,
+      "knowledge": {
+        "robner": "Mr. Robner was a good employer.",
+        "business": "The business was in some trouble, yes.",
+        "focus": "Focus Corporation was interested in a merger.",
+        "george": "George and his father didn't get along well.",
+        "alibi": "I was in my room all night.",
+        "work": "I often worked late with Mr. Robner.",
+        "pills": "I don't know anything about Mr. Robner's medication.",
+        "loblo": "LoBlo? That's my blood pressure medication."
+      },
+      "conversation_topics": {
+        "relationship": "My relationship with Mr. Robner was strictly professional.",
+        "canada": "Canada? I've never been there."
+      },
+      "evidence_topics": ["relationship"],
+      "show_reactions": {
+        "loblo": "Ms. Dunbar looks uncomfortable. 'That's my private medication.'",
+        "ticket_stub": "Ms. Dunbar's face goes white. 'I... I can explain.'",
+        "saucer": "Ms. Dunbar looks nervous. 'I don't know how my fingerprints got there.'"
+      },
+      "schedule": [
+        {"time": 480, "location": "dunbar_room", "activity": "working"},
+        {"time": 600, "location": "dining_room", "activity": "breakfast"},
+        {"time": 660, "location": "study", "activity": "working"},
+        {"time": 780, "location": "dunbar_room", "activity": "packing"},
+        {"time": 840, "location": "garden", "activity": "walking"},
+        {"time": 900, "location": "dunbar_room", "activity": "nervous"}
+      ]
+    },
+    
+    "mrs_rourke": {
+      "name": "Mrs. Rourke",
+      "description": "The housekeeper. She seems upset by the tragedy.",
+      "synonyms": ["rourke", "housekeeper", "mrs"],
+      "location": "kitchen",
+      "trust_level": 3,
+      "knowledge": {
+        "household": "I've been here five years. It's a good position.",
+        "robner": "Mr. Robner was a fair employer.",
+        "george": "Young George has his troubles.",
+        "dunbar": "Ms. Dunbar keeps to herself mostly.",
+        "baxter": "Mr. Baxter runs a tight ship.",
+        "breakfast": "I prepared Mr. Robner's breakfast tray that morning.",
+        "tea": "I made tea for Mr. Robner the previous evening."
+      },
+      "conversation_topics": {
+        "stairs": "The stairs creak terribly. You can hear anyone going up or down."
+      },
+      "evidence_topics": ["stairs"],
+      "schedule": [
+        {"time": 480, "location": "kitchen", "activity": "cooking"},
+        {"time": 540, "location": "dining_room", "activity": "serving"},
+        {"time": 600, "location": "kitchen", "activity": "cleaning"},
+        {"time": 720, "location": "rourke_room", "activity": "resting"},
+        {"time": 840, "location": "kitchen", "activity": "preparing_dinner"}
+      ]
+    },
+    
+    "mcnabb": {
+      "name": "McNabb",
+      "description": "The gardener. He's angry about damage to his roses.",
+      "synonyms": ["mcnabb", "gardener", "angus"],
+      "location": "garden",
+      "trust_level": 2,
+      "knowledge": {
+        "roses": "Someone's been trampling my roses!",
+        "ladder": "My ladder's been moved! It was in the shed.",
+        "holes": "Look at these holes! Someone put a ladder here.",
+        "garden": "I take pride in this garden.",
+        "family": "The Robners are good employers.",
+        "night": "I wasn't here that night. I leave at 6 PM."
+      },
+      "conversation_topics": {
+        "damage": "The damage was done recently, maybe last night."
+      },
+      "evidence_topics": ["damage", "ladder"],
+      "schedule": [
+        {"time": 480, "location": "garden", "activity": "working"},
+        {"time": 540, "location": "shed", "activity": "getting_tools"},
+        {"time": 600, "location": "orchard", "activity": "pruning"},
+        {"time": 720, "location": "rose_garden", "activity": "upset"},
+        {"time": 780, "location": "garden_path", "activity": "working"}
+      ]
+    }
+  }
+}

@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from ..parser.parser import ParseResult
     
 from .base_command import Command, CommandResult, CommandStatus
-from ..core.flags import ObjectFlag
+from core.flags import ObjectFlag
 
 
 class GoCommand(Command):
@@ -36,7 +36,7 @@ class GoCommand(Command):
             new_room = self.world.get_current_room()
             if new_room:
                 # Build room description
-                from ..io.interface import GameInterface
+                from ..game_io.interface import GameInterface
                 interface = GameInterface(self.engine)
                 interface.display_room(new_room)
                 

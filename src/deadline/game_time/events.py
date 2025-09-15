@@ -10,15 +10,15 @@ from typing import Dict, Any, Optional
 
 class EventType(Enum):
     """Types of game events"""
-    CHARACTER_MOVEMENT = auto()
-    CHARACTER_ACTION = auto()
-    DIALOGUE = auto()
-    PHONE_CALL = auto()
-    MEETING = auto()
-    DISCOVERY = auto()
-    TIME_LIMIT_WARNING = auto()
-    GAME_OVER = auto()
-    CUSTOM = auto()
+    CHARACTER_MOVEMENT = 1
+    CHARACTER_ACTION = 2
+    DIALOGUE = 3
+    PHONE_CALL = 4
+    MEETING = 5
+    DISCOVERY = 6
+    TIME_LIMIT_WARNING = 7
+    GAME_OVER = 8
+    CUSTOM = 9
 
 
 @dataclass
