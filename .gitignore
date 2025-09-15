@@ -1,0 +1,13 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Additional directories that we don't want to store
+.mypy_cache/
+.pytest_cache/
+.venv/
+out/
+tests/
+
+*.puml
