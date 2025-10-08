@@ -5,7 +5,7 @@ Game interface - handles input/output with the player
 from typing import TYPE_CHECKING, Dict, Any
 from core.flags import ObjectFlag
 if TYPE_CHECKING:
-    from ..core.game_object import Room
+    from core.game_object import Room
     
 from prompt_toolkit.history import InMemoryHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
